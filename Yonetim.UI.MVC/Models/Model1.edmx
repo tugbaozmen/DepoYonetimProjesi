@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Depo_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Depo">
+          <Key>
+            <PropertyRef Name="DepoId" />
+          </Key>
+          <Property Name="DepoId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Tanim" Type="nvarchar" MaxLength="50" />
+          <Property Name="KisiId" Type="int" Nullable="false" />
+          <Property Name="UrunId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Depo_DB.dbo.Depo_Urun' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Depo_Urun">
+          <Key>
+            <PropertyRef Name="UrunId" />
+            <PropertyRef Name="DepoId" />
+          </Key>
+          <Property Name="UrunId" Type="int" Nullable="false" />
+          <Property Name="DepoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kisi">
+          <Key>
+            <PropertyRef Name="KisiId" />
+          </Key>
+          <Property Name="KisiId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Soyad" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Mail" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Sifre" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Urun">
+          <Key>
+            <PropertyRef Name="UrunId" />
+          </Key>
+          <Property Name="UrunId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Tanim" Type="nvarchar" MaxLength="30" />
+          <Property Name="Fiyat" Type="float" Nullable="false" />
+          <Property Name="OperasyonBilgisi" Type="nvarchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Depo_Kisi">
+          <End Role="Kisi" Type="Self.Kisi" Multiplicity="1" />
+          <End Role="Depo" Type="Self.Depo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kisi">
+              <PropertyRef Name="KisiId" />
+            </Principal>
+            <Dependent Role="Depo">
+              <PropertyRef Name="KisiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Depo_Urun_Depo">
+          <End Role="Depo" Type="Self.Depo" Multiplicity="1" />
+          <End Role="Depo_Urun" Type="Self.Depo_Urun" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Depo">
+              <PropertyRef Name="DepoId" />
+            </Principal>
+            <Dependent Role="Depo_Urun">
+              <PropertyRef Name="DepoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Depo_Urun_Urun">
+          <End Role="Urun" Type="Self.Urun" Multiplicity="1" />
+          <End Role="Depo_Urun" Type="Self.Depo_Urun" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Urun">
+              <PropertyRef Name="UrunId" />
+            </Principal>
+            <Dependent Role="Depo_Urun">
+              <PropertyRef Name="UrunId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Depo_DBModelStoreContainer">
+          <EntitySet Name="Depo" EntityType="Self.Depo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kisi" EntityType="Self.Kisi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Urun" EntityType="Self.Urun" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Depo_Urun" EntityType="Self.Depo_Urun" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Depo_Urun].[UrunId] AS [UrunId], 
+    [Depo_Urun].[DepoId] AS [DepoId]
+    FROM [dbo].[Depo_Urun] AS [Depo_Urun]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Depo_Kisi" Association="Self.FK_Depo_Kisi">
+            <End Role="Kisi" EntitySet="Kisi" />
+            <End Role="Depo" EntitySet="Depo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Depo_Urun_Depo" Association="Self.FK_Depo_Urun_Depo">
+            <End Role="Depo" EntitySet="Depo" />
+            <End Role="Depo_Urun" EntitySet="Depo_Urun" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Depo_Urun_Urun" Association="Self.FK_Depo_Urun_Urun">
+            <End Role="Urun" EntitySet="Urun" />
+            <End Role="Depo_Urun" EntitySet="Depo_Urun" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Depo_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Depo">
+          <Key>
+            <PropertyRef Name="DepoId" />
+          </Key>
+          <Property Name="DepoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tanim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KisiId" Type="Int32" Nullable="false" />
+          <Property Name="UrunId" Type="Int32" />
+          <NavigationProperty Name="Kisi" Relationship="Self.FK_Depo_Kisi" FromRole="Depo" ToRole="Kisi" />
+          <NavigationProperty Name="Uruns" Relationship="Self.Depo_Urun" FromRole="Depo" ToRole="Urun" />
+        </EntityType>
+        <EntityType Name="Kisi">
+          <Key>
+            <PropertyRef Name="KisiId" />
+          </Key>
+          <Property Name="KisiId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sifre" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Depoes" Relationship="Self.FK_Depo_Kisi" FromRole="Kisi" ToRole="Depo" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Urun">
+          <Key>
+            <PropertyRef Name="UrunId" />
+          </Key>
+          <Property Name="UrunId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tanim" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Fiyat" Type="Double" Nullable="false" />
+          <Property Name="OperasyonBilgisi" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Depoes" Relationship="Self.Depo_Urun" FromRole="Urun" ToRole="Depo" />
+        </EntityType>
+        <Association Name="FK_Depo_Kisi">
+          <End Role="Kisi" Type="Self.Kisi" Multiplicity="1" />
+          <End Role="Depo" Type="Self.Depo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kisi">
+              <PropertyRef Name="KisiId" />
+            </Principal>
+            <Dependent Role="Depo">
+              <PropertyRef Name="KisiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Depo_Urun">
+          <End Role="Depo" Type="Self.Depo" Multiplicity="*" />
+          <End Role="Urun" Type="Self.Urun" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Depo_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Depoes" EntityType="Self.Depo" />
+          <EntitySet Name="Kisis" EntityType="Self.Kisi" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Uruns" EntityType="Self.Urun" />
+          <AssociationSet Name="FK_Depo_Kisi" Association="Self.FK_Depo_Kisi">
+            <End Role="Kisi" EntitySet="Kisis" />
+            <End Role="Depo" EntitySet="Depoes" />
+          </AssociationSet>
+          <AssociationSet Name="Depo_Urun" Association="Self.Depo_Urun">
+            <End Role="Depo" EntitySet="Depoes" />
+            <End Role="Urun" EntitySet="Uruns" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Depo_DBModelStoreContainer" CdmEntityContainer="Depo_DBEntities">
+          <EntitySetMapping Name="Depoes">
+            <EntityTypeMapping TypeName="Depo_DBModel.Depo">
+              <MappingFragment StoreEntitySet="Depo">
+                <ScalarProperty Name="DepoId" ColumnName="DepoId" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Tanim" ColumnName="Tanim" />
+                <ScalarProperty Name="KisiId" ColumnName="KisiId" />
+                <ScalarProperty Name="UrunId" ColumnName="UrunId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kisis">
+            <EntityTypeMapping TypeName="Depo_DBModel.Kisi">
+              <MappingFragment StoreEntitySet="Kisi">
+                <ScalarProperty Name="KisiId" ColumnName="KisiId" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Depo_DBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Uruns">
+            <EntityTypeMapping TypeName="Depo_DBModel.Urun">
+              <MappingFragment StoreEntitySet="Urun">
+                <ScalarProperty Name="UrunId" ColumnName="UrunId" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Tanim" ColumnName="Tanim" />
+                <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
+                <ScalarProperty Name="OperasyonBilgisi" ColumnName="OperasyonBilgisi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Depo_Urun" TypeName="Depo_DBModel.Depo_Urun" StoreEntitySet="Depo_Urun">
+            <EndProperty Name="Depo">
+              <ScalarProperty Name="DepoId" ColumnName="DepoId" />
+            </EndProperty>
+            <EndProperty Name="Urun">
+              <ScalarProperty Name="UrunId" ColumnName="UrunId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

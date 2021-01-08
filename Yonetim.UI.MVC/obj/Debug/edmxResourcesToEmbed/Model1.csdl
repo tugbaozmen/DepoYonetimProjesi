@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Depo_DBModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Depo">
+    <Key>
+      <PropertyRef Name="DepoId" />
+    </Key>
+    <Property Name="DepoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Tanim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KisiId" Type="Int32" Nullable="false" />
+    <Property Name="UrunId" Type="Int32" />
+    <NavigationProperty Name="Kisi" Relationship="Self.FK_Depo_Kisi" FromRole="Depo" ToRole="Kisi" />
+    <NavigationProperty Name="Urun" Relationship="Self.Depo_Urun" FromRole="Depo" ToRole="Urun" />
+  </EntityType>
+  <EntityType Name="Kisi">
+    <Key>
+      <PropertyRef Name="KisiId" />
+    </Key>
+    <Property Name="KisiId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Mail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Sifre" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Depo" Relationship="Self.FK_Depo_Kisi" FromRole="Kisi" ToRole="Depo" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Urun">
+    <Key>
+      <PropertyRef Name="UrunId" />
+    </Key>
+    <Property Name="UrunId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Tanim" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Fiyat" Type="Double" Nullable="false" />
+    <Property Name="OperasyonBilgisi" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Depo" Relationship="Self.Depo_Urun" FromRole="Urun" ToRole="Depo" />
+  </EntityType>
+  <Association Name="FK_Depo_Kisi">
+    <End Role="Kisi" Type="Self.Kisi" Multiplicity="1" />
+    <End Role="Depo" Type="Self.Depo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kisi">
+        <PropertyRef Name="KisiId" />
+      </Principal>
+      <Dependent Role="Depo">
+        <PropertyRef Name="KisiId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Depo_Urun">
+    <End Role="Depo" Type="Self.Depo" Multiplicity="*" />
+    <End Role="Urun" Type="Self.Urun" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="Depo_DBEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Depo" EntityType="Self.Depo" />
+    <EntitySet Name="Kisi" EntityType="Self.Kisi" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Urun" EntityType="Self.Urun" />
+    <AssociationSet Name="FK_Depo_Kisi" Association="Self.FK_Depo_Kisi">
+      <End Role="Kisi" EntitySet="Kisi" />
+      <End Role="Depo" EntitySet="Depo" />
+    </AssociationSet>
+    <AssociationSet Name="Depo_Urun" Association="Self.Depo_Urun">
+      <End Role="Depo" EntitySet="Depo" />
+      <End Role="Urun" EntitySet="Urun" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

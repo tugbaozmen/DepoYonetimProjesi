@@ -1,0 +1,76 @@
+﻿@model Urun
+
+@{
+    ViewBag.Title = "UrunEkle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UrunEkle</h2>
+
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Ürün Yönetimi
+                </h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Ürün Ekle</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            @using (Html.BeginForm())
+                            {
+                                <div class="form-group">
+                                    @Html.TextBoxFor(a => a.Ad, new { @class = "form-control", placeholder = "Ad" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(a => a.Tanim, new { @class = "form-control", placeholder = "Tanım" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(a => a.Fiyat, new { @class = "form-control", placeholder = "Fiyat", @type="number" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(a => a.OperasyonBilgisi, new { @class = "form-control", placeholder = "Operasyon Bilgisi" })
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-warning">Ekle</button>
+                                </div>
+                            }
+
+                            @if (ViewBag.DogruMu != null)
+                            {
+                                if (ViewBag.DogruMu)
+                                {
+                                    <h2>Ürün Ekleme İşlemi Başarı İle Gerçekleştirilmiştir.</h2>
+                                    <br />
+                                    @Html.ActionLink("Listeye Geri Dön", "UrunleriListele")
+                                }
+                                else
+                                {
+                                    <span class="alert-danger">Kayıt işlemi başarısız</span>
+                                }
+                            }
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </section>
+        </div>
+        <!-- /.col -->
+    </div>
+
+</body>

@@ -1,0 +1,88 @@
+﻿@model Depo
+
+@{
+    ViewBag.Title = "DepoGuncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Depo Yönetimi
+                </h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Depo Güncelle</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            @if (ViewBag.Sonuc != null)
+                            {
+                                if (ViewBag.Sonuc)
+                                {
+                                    <h2>Depo bulunamadı</h2>
+                                    @Html.ActionLink("Depo Listesine Geri Dön", "DepoListele")
+                                }
+                                else
+                                {
+                                    <h2>Güncelleme İşlemi Başarı İle Gerçekleştirilmiştir.</h2>
+                                    @Html.ActionLink("Depo Listesine Geri Dön", "DepoListele")
+                                }
+                            }
+                            else
+                            {
+                                <h2>@Model.Ad Depo Bilgilerini Güncelle</h2>
+
+                                using (Html.BeginForm())
+                                {
+                                    <div class="form-group">
+                                        @*@Html.TextBoxFor(a => a.ProductID, new { @class = "form-control", disabled = "disabled" })*@
+                                        @Html.HiddenFor(a => a.DepoId)
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.Label("Depo Adı") <br />
+                                        @Html.EditorFor(a => a.Ad, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.Label("Depo Tanımı") <br />
+                                        @Html.EditorFor(a => a.Tanim, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.Label("Depodan Sorumlu Kişiyi Seçiniz")
+                                        @Html.DropDownListFor(a => a.KisiId, (IEnumerable<SelectListItem>)ViewBag.Kisiler, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-warning">Güncelle</button>
+                                    </div>
+                                }
+                            }
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </section>
+        </div>
+        <!-- /.col -->
+    </div>
+
+</body>
+
+
+
+
+
+
+
+
+
